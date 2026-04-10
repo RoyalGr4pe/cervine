@@ -1,0 +1,23 @@
+{
+  "name": "@repo/render-core",
+  "version": "0.0.0",
+  "private": true,
+  "type": "module",
+  "exports": {
+    ".": "./src/index.ts"
+  },
+  "scripts": {
+    "build": "tsc",
+    "check-types": "tsc --noEmit",
+    "lint": "eslint ."
+  },
+  "dependencies": {
+    "@repo/mesh-core": "workspace:*",
+    "three": "^0.177.0"
+  },
+  "devDependencies": {
+    "@repo/typescript-config": "workspace:*",
+    "@types/three": "^0.177.0",
+    "typescript": "5.9.2"
+  }
+}

@@ -1,0 +1,44 @@
+.container {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.uploadLabel {
+  display: inline-block;
+  padding: 8px 16px;
+  background: #333;
+  color: #eee;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 14px;
+  user-select: none;
+}
+
+.uploadLabel:hover {
+  background: #444;
+}
+
+.fileInput {
+  display: none;
+}
+
+.video {
+  max-width: 100%;
+  border-radius: 6px;
+  background: #000;
+}
+
+.timeInfo {
+  display: flex;
+  gap: 8px;
+  font-size: 13px;
+  color: #aaa;
+  align-items: center;
+  font-variant-numeric: tabular-nums;
+}
+
+.status {
+  margin-left: auto;
+  color: #00ff88;
+}

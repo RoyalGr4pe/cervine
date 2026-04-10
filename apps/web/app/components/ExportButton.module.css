@@ -1,0 +1,38 @@
+.container {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.startBtn,
+.stopBtn {
+  padding: 8px 16px;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 13px;
+  font-weight: 600;
+}
+
+.startBtn {
+  background: #1a6b3a;
+  color: #fff;
+}
+
+.startBtn:hover {
+  background: #22884a;
+}
+
+.stopBtn {
+  background: #8b1a1a;
+  color: #fff;
+}
+
+.stopBtn:hover {
+  background: #b02222;
+}
+
+.error {
+  color: #ff6666;
+  font-size: 12px;
+}

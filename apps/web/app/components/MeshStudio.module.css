@@ -1,0 +1,169 @@
+.studio {
+  min-height: 100vh;
+  background: #0d0d0d;
+  color: #eee;
+  display: flex;
+  flex-direction: column;
+  padding: 24px;
+  font-family: var(--font-geist-sans, sans-serif);
+}
+
+.title {
+  font-size: 20px;
+  font-weight: 700;
+  margin-bottom: 24px;
+  color: #00ff88;
+  letter-spacing: 0.03em;
+}
+
+.layout {
+  display: flex;
+  gap: 24px;
+  align-items: flex-start;
+  flex-wrap: wrap;
+}
+
+.sidebar {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+  min-width: 240px;
+  max-width: 300px;
+  flex-shrink: 0;
+}
+
+.section {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.sectionTitle {
+  font-size: 11px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  color: #666;
+}
+
+.hint {
+  font-size: 12px;
+  color: #555;
+  line-height: 1.5;
+}
+
+.sliderRow {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.sliderLabel {
+  font-size: 12px;
+  color: #666;
+  min-width: 80px;
+  flex-shrink: 0;
+}
+
+.colorRow {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.colorOptions {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.colorBtn {
+  padding: 4px 10px;
+  border: 1px solid #333;
+  background: #1a1a1a;
+  color: #aaa;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 12px;
+}
+
+.colorBtn:hover {
+  background: #222;
+  color: #eee;
+}
+
+.colorBtn.active {
+  border-color: #00ff88;
+  color: #00ff88;
+  background: #0d2b1e;
+}
+
+.colorPicker {
+  width: 28px;
+  height: 28px;
+  border: 1px solid #333;
+  border-radius: 4px;
+  background: none;
+  cursor: pointer;
+  padding: 1px;
+}
+
+.slider {
+  flex: 1;
+  accent-color: #00ff88;
+}
+
+.sliderVal {
+  font-size: 13px;
+  font-variant-numeric: tabular-nums;
+  color: #00ff88;
+  min-width: 28px;
+  text-align: right;
+}
+
+.materialBtns {
+  display: flex;
+  gap: 6px;
+  flex-wrap: wrap;
+}
+
+.matBtn {
+  padding: 6px 14px;
+  border: 1px solid #333;
+  background: #1a1a1a;
+  color: #aaa;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 13px;
+  text-transform: capitalize;
+}
+
+.matBtn:hover {
+  background: #222;
+  color: #eee;
+}
+
+.matBtn.active {
+  border-color: #00ff88;
+  color: #00ff88;
+  background: #0d2b1e;
+}
+
+.canvasArea {
+  flex: 1;
+  display: flex;
+  align-items: flex-start;
+  justify-content: center;
+}
+
+.placeholder {
+  width: 640px;
+  height: 360px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 2px dashed #333;
+  border-radius: 8px;
+  color: #555;
+  font-size: 14px;
+}
