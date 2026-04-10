@@ -8,6 +8,7 @@ import {
   type RefObject,
 } from "react";
 import styles from "./VideoPlayer.module.css";
+import { analytics } from "../lib/analytics";
 
 interface VideoState {
   duration: number;
@@ -50,6 +51,7 @@ export function VideoPlayer({ videoRef, onVideoReady }: Props) {
     const video = videoRef.current;
     if (!video) return;
     setVideoState((s) => ({ ...s, duration: video.duration }));
+    analytics.videoUploaded(video.duration);
     onVideoReady?.(video);
   }, [videoRef, onVideoReady]);
 

@@ -3,6 +3,7 @@
 import { useRef, useState, useCallback } from "react";
 import { processVideo } from "@repo/video-core";
 import type { DotAnimation, Dot } from "@repo/video-core";
+import { analytics } from "../lib/analytics";
 import { VideoPlayer } from "./VideoPlayer";
 import { ObjectOutline } from "./ObjectOutline";
 import { ProcessingView } from "./ProcessingView";
@@ -38,6 +39,10 @@ export function MeshStudio() {
     setPhase("processing");
     setProgress({ done: 0, total: 0, dots: [] });
 
+    const startedAt = performance.now();
+    const estimatedFrames = Math.round((vid.duration ?? 0) * 30);
+    analytics.processingStarted(estimatedFrames, spacing, threshold);
+
     try {
       const result = await processVideo(vid, {
         threshold,
@@ -47,6 +52,7 @@ export function MeshStudio() {
         onProgress: (done, total, dots) => setProgress({ done, total, dots }),
       });
       if (!abortRef.current.signal.aborted) {
+        analytics.processingCompleted(result.frameCount, performance.now() - startedAt);
         setAnimation(result);
         setPhase("ready");
       }
@@ -58,8 +64,9 @@ export function MeshStudio() {
 
   const handleCancel = useCallback(() => {
     abortRef.current?.abort();
+    analytics.processingCancelled(progress.done, progress.total);
     setPhase("idle");
-  }, []);
+  }, [progress.done, progress.total]);
 
   const handleReprocess = useCallback(() => {
     setAnimation(null);

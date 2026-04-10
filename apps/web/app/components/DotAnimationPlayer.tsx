@@ -3,6 +3,7 @@
 import { useEffect, useRef, useState, useCallback } from "react";
 import type { DotAnimation } from "@repo/video-core";
 import styles from "./DotAnimationPlayer.module.css";
+import { analytics } from "../lib/analytics";
 
 interface Props {
   animation: DotAnimation;
@@ -117,12 +118,14 @@ export function DotAnimationPlayer({ animation, dotSize }: Props) {
       a.download = `cervine-${Date.now()}.webm`;
       a.click();
       URL.revokeObjectURL(url);
+      analytics.exportCompleted(frameCount);
       setRecording(false);
     };
 
     recorderRef.current = recorder;
     recorder.start();
     setRecording(true);
+    analytics.exportStarted();
 
     // Step through every frame at real fps timing
     const msPerFrame = 1000 / fps;
