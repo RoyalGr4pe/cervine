@@ -167,3 +167,43 @@
   color: #555;
   font-size: 14px;
 }
+
+.processBtn {
+  width: 100%;
+  padding: 10px;
+  background: #0d2b1e;
+  border: 1px solid #00ff88;
+  color: #00ff88;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 14px;
+  font-weight: 600;
+  letter-spacing: 0.03em;
+}
+
+.processBtn:hover {
+  background: #143d28;
+}
+
+.reprocessBtn {
+  width: 100%;
+  padding: 8px;
+  background: #1a1a1a;
+  border: 1px solid #333;
+  color: #aaa;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 13px;
+}
+
+.reprocessBtn:hover {
+  background: #222;
+  color: #eee;
+}
+
+.processingWrapper {
+  display: flex;
+  align-items: flex-start;
+  justify-content: flex-start;
+  width: 100%;
+}
