@@ -38,6 +38,26 @@
   background: #333;
 }
 
+.modeBtn {
+  background: #222;
+  border: 1px solid #333;
+  color: #eee;
+  border-radius: 4px;
+  height: 32px;
+  min-width: 72px;
+  padding: 0 10px;
+  cursor: pointer;
+  font-size: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.modeBtn:hover {
+  background: #333;
+}
+
 .scrubber {
   flex: 1;
   accent-color: #00ff88;

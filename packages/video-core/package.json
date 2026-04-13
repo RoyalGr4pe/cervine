@@ -1,21 +1,22 @@
 {
-  "name": "@repo/video-core",
-  "version": "0.0.0",
-  "private": true,
-  "type": "module",
-  "exports": {
-    ".": "./src/index.ts"
-  },
-  "scripts": {
-    "build": "tsc",
-    "check-types": "tsc --noEmit",
-    "lint": "eslint ."
-  },
-  "dependencies": {
-    "@repo/mesh-core": "workspace:*"
-  },
-  "devDependencies": {
-    "@repo/typescript-config": "workspace:*",
-    "typescript": "5.9.2"
-  }
+    "name": "@repo/video-core",
+    "version": "0.0.0",
+    "private": true,
+    "type": "module",
+    "exports": {
+        ".": "./src/index.ts"
+    },
+    "scripts": {
+        "build": "tsc",
+        "check-types": "tsc --noEmit",
+        "lint": "eslint .",
+        "benchmark:detection": "pnpm run build && node scripts/benchmarkDetection.mjs"
+    },
+    "dependencies": {
+        "@repo/mesh-core": "workspace:*"
+    },
+    "devDependencies": {
+        "@repo/typescript-config": "workspace:*",
+        "typescript": "5.9.2"
+    }
 }

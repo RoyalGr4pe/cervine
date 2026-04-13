@@ -2,6 +2,10 @@
 
 This folder contains the implementation plan for the Video -> Animated Mesh MVP.
 
+Extended planning packs:
+
+- [15-dot-studio-improvements.md](15-dot-studio-improvements.md)
+
 Goal:
 
 - Finish planning first
@@ -31,6 +35,7 @@ Goal:
 12. [12-update-geometry-with-tracked-points.md](12-update-geometry-with-tracked-points.md)
 13. [13-styling-and-materials.md](13-styling-and-materials.md)
 14. [14-export.md](14-export.md)
+15. [15-dot-studio-improvements.md](15-dot-studio-improvements.md)
 
 ## MVP Completion Checklist
 

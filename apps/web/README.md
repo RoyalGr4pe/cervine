@@ -1,36 +1,100 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/create-next-app).
+# Cervine Web: Detection to Dot Grid
 
-## Getting Started
+This app turns an uploaded video into a dot-based animation by detecting the foreground object in each frame, then sampling that object on a moving grid.
 
-First, run the development server:
+## High-Level Flow
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+1. Upload a video in the UI.
+2. Adjust settings:
+   - Threshold (foreground sensitivity)
+   - Spacing (distance between dots)
+   - Dot size (render-only)
+   - Dot color (source pixel color or fixed color)
+   - Display mode (dots or delaunay)
+   - Delaunay line width + color strategy
+3. Live transformed preview updates immediately after upload and while tuning settings.
+4. Process all frames into a dot animation.
+5. Play, scrub, and export the result as WebM.
+
+## Detection Pipeline
+
+Each frame starts as `ImageData` from an off-screen canvas.
+
+1. Background estimate
+   - A background RGB color is estimated from border pixels.
+   - During full processing, this is sampled once from the first frame and reused.
+
+2. Foreground mask
+   - For each pixel, a robust score is computed from:
+     - squared RGB distance from background
+     - normalized chroma distance
+     - optional motion-assist using previous-frame luma difference
+   - Pixel is foreground when this combined score passes the threshold logic.
+
+3. Mask cleanup (morphological close)
+   - Dilation then erosion are applied.
+   - Implementation uses separable 1D passes with running sums for speed.
+
+4. Object extraction
+   - Live preview path uses full detection:
+     - keeps the largest connected blob
+     - computes contour, centroid, and bounding box
+   - Batch processing path uses a fast variant:
+     - skips contour tracing and largest-blob filtering
+     - uses cleaned mask + centroid directly
+
+5. Small-object rejection
+   - If detected foreground is too small (< 0.5% of frame), frame is treated as no object.
+
+6. Dot tracking
+   - Processed dot frames are matched frame-to-frame using nearest-neighbor gating.
+   - Stable IDs, velocity, and fade TTL reduce hard pop-in/pop-out behavior.
+
+## Dot Grid Conversion
+
+For each processed frame:
+
+1. A grid is laid out with step size = `spacing`.
+2. Grid origin is snapped to object centroid:
+   - `originX = ((centroid.x % spacing) + spacing) % spacing`
+   - `originY = ((centroid.y % spacing) + spacing) % spacing`
+   - This keeps the dot lattice visually centered on the moving object.
+3. Grid points inside the foreground mask become dots.
+4. Dot color comes from either:
+   - source pixel RGB at that point, or
+   - fixed UI-selected hex color.
+
+Output frame format is an array of dots:
+
+```ts
+type Dot = { x: number; y: number; r: number; g: number; b: number };
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+The full animation is:
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+```ts
+type DotAnimation = {
+  frames: Dot[][];
+  fps: number; // currently 30
+  frameCount: number;
+  videoWidth: number;
+  videoHeight: number;
+};
+```
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load Inter, a custom Google Font.
+## Runtime + UI Notes
 
-## Learn More
+- Processing samples frames at a target 30 FPS.
+- Idle mode now shows live transformed preview (no need to process first to see changes).
+- Preview updates continuously during playback and reacts to settings changes.
+- Render mode can be switched between dots and delaunay for preview, processing preview, and final player/export.
+- Progress UI renders the latest processed dot frame while batch processing runs.
+- Processing supports cancellation through `AbortController`.
+- Final animation player supports play/pause, restart, frame scrubbing, and WebM export via `MediaRecorder`.
 
-To learn more about Next.js, take a look at the following resources:
+## Where Logic Lives
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+- Web orchestration/UI: `apps/web/app/components`
+- Core frame extraction + detection + processing: `packages/video-core/src`
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+If you are tuning quality vs speed, start with `threshold` and `spacing` first.

@@ -3,12 +3,18 @@
 import { useRef, useEffect } from "react";
 import type { Dot } from "@repo/video-core";
 import styles from "./ProcessingView.module.css";
+import { renderFrame } from "./renderModes";
+import type { MeshColorMode, RenderMode } from "./renderModes";
 
 interface Props {
   processed: number;
   total: number;
   latestDots: Dot[];
   dotSize: number;
+  renderMode: RenderMode;
+  meshLineWidth: number;
+  meshColorMode: MeshColorMode;
+  dotColor: string | null;
   videoWidth: number;
   videoHeight: number;
   onCancel: () => void;
@@ -19,6 +25,10 @@ export function ProcessingView({
   total,
   latestDots,
   dotSize,
+  renderMode,
+  meshLineWidth,
+  meshColorMode,
+  dotColor,
   videoWidth,
   videoHeight,
   onCancel,
@@ -33,13 +43,24 @@ export function ProcessingView({
     const ctx = canvas.getContext("2d");
     if (!ctx) return;
     ctx.clearRect(0, 0, videoWidth, videoHeight);
-    for (const dot of latestDots) {
-      ctx.beginPath();
-      ctx.arc(dot.x, dot.y, dotSize, 0, Math.PI * 2);
-      ctx.fillStyle = `rgb(${dot.r},${dot.g},${dot.b})`;
-      ctx.fill();
-    }
-  }, [latestDots, dotSize, videoWidth, videoHeight]);
+
+    renderFrame(ctx, latestDots, {
+      mode: renderMode,
+      dotSize,
+      meshLineWidth,
+      meshColorMode,
+      meshSingleColor: dotColor,
+    });
+  }, [
+    latestDots,
+    dotSize,
+    renderMode,
+    meshLineWidth,
+    meshColorMode,
+    dotColor,
+    videoWidth,
+    videoHeight,
+  ]);
 
   return (
     <div className={styles.container}>
@@ -60,7 +81,9 @@ export function ProcessingView({
             <div className={styles.bar} style={{ width: `${pct}%` }} />
           </div>
         </div>
-        <button onClick={onCancel} className={styles.cancelBtn}>Cancel</button>
+        <button onClick={onCancel} className={styles.cancelBtn}>
+          Cancel
+        </button>
       </div>
     </div>
   );
